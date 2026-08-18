@@ -1,0 +1,11 @@
+{
+  "name": "resilientedge-multi-region-platform",
+  "private": true,
+  "version": "1.0.0",
+  "packageManager": "pnpm@10.6.3",
+  "scripts": {
+    "lint": "pnpm --filter resilientedge-api lint && pnpm --filter resilientedge-console lint",
+    "test": "pnpm --filter resilientedge-api test && pnpm --filter resilientedge-console test",
+    "build": "pnpm --filter resilientedge-api build && pnpm --filter resilientedge-console build"
+  }
+}

@@ -1,0 +1,46 @@
+name: Quality Gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  simulator-quality:
+    name: Simulator and operations console
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10.6.3 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm build
+
+  infrastructure-quality:
+    name: Terraform and Kubernetes review
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with: { terraform_version: 1.9.8 }
+      - run: terraform fmt -check -recursive terraform
+      - name: Validate Terraform without state backend or AWS credentials
+        run: |
+          for environment in primary secondary global; do
+            terraform -chdir=terraform/envs/$environment init -backend=false
+            terraform -chdir=terraform/envs/$environment validate
+          done
+      - name: Install offline Kubernetes manifest validator
+        run: |
+          curl -fsSLO https://github.com/yannh/kubeconform/releases/download/v0.6.7/kubeconform-linux-amd64.tar.gz
+          tar -xzf kubeconform-linux-amd64.tar.gz kubeconform
+          sudo install -m 0755 kubeconform /usr/local/bin/kubeconform
+      - name: Validate Kubernetes availability controls
+        run: kubeconform -strict -summary k8s/resilientedge.yaml

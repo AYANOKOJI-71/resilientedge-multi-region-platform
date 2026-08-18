@@ -1,0 +1,6 @@
+{
+  "widgets": [
+    {"type":"metric","properties":{"title":"Regional request outcomes","region":"us-east-1","view":"timeSeries","metrics":[["AWS/ApplicationELB","HTTPCode_Target_5XX_Count"],["AWS/ApplicationELB","TargetResponseTime"]]}},
+    {"type":"metric","properties":{"title":"Aurora replication lag","region":"us-east-1","view":"timeSeries","metrics":[["AWS/RDS","AuroraGlobalDBReplicationLag"]]}}
+  ]
+}
