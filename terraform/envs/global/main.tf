@@ -12,7 +12,6 @@ provider "aws" { region = "us-east-1" }
 variable "hosted_zone_id" { type = string }
 variable "primary_alb_dns_name" { type = string }
 variable "secondary_alb_dns_name" { type = string }
-variable "primary_cluster_arn" { type = string }
 
 module "dns" {
   source             = "../../modules/dns-failover"
@@ -23,7 +22,6 @@ module "dns" {
 }
 
 module "aurora_global" {
-  source              = "../../modules/aurora-global"
-  global_cluster_id   = "resilientedge-global"
-  primary_cluster_arn = var.primary_cluster_arn
+  source            = "../../modules/aurora-global"
+  global_cluster_id = "resilientedge-global"
 }
