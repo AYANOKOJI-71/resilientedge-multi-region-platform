@@ -1,6 +1,6 @@
 # ResilientEdge — Multi-Region Availability Lab
 
-**ResilientEdge** is an interview-ready reference implementation for an AWS active/passive, multi-region web application. It combines a deterministic local resilience console with Terraform and Kubernetes code that models an operational architecture rather than making cloud changes by default.
+**ResilientEdge** is an implementation for an AWS active/passive, multi-region web application. It combines a deterministic local resilience console with Terraform and Kubernetes code that models an operational architecture rather than making cloud changes by default.
 
 > **Safety and cost boundary:** the dashboard is a local simulator. It makes no AWS API calls, creates no AWS resources, and uses no credentials. Terraform is intentionally validation-only until a reviewer supplies their own approved cloud environment, provider configuration, DNS zone, identities, and change-control process.
 
@@ -64,6 +64,4 @@ monitoring/               CloudWatch dashboard template
 docs/                     Architecture, AWS research sources, and DR runbook
 ```
 
-## Interview walkthrough
 
-Start with the visible reliability objectives: **99.95% availability**, **15-minute RTO**, and an illustrative **under-60-second RPO gate**. Explain why the design preserves a warm secondary, separates traffic routing from data-promotion authority, records failover evidence, and makes failback a distinct approved operation. Then show the local drill and trace each control to the Terraform and Kubernetes artifacts.
